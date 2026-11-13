@@ -73,7 +73,7 @@ An **unofficial MOD** for the Steam version of "UNKO TECHNICA". Apply it with on
 
 ## Download
 
-👉 **[Download the latest version](https://github.com/Nore139/UnkoTechnicaMod/releases/latest)** (click `UnkoTechnicaMod_vX.X.X.zip`)
+👉 **[Download the latest version](https://github.com/Nore139/UnkoTechnicaMod/releases/latest)** (click `UnkoTechnicaMod_v1.0.0.zip`)
 
 ## What it does
 
