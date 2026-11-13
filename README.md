@@ -11,7 +11,7 @@ Steam版『ウンコテクニカ』向けの**非公式MOD**です。ボタン�
 
 ## ダウンロード
 
-👉 **[最新版をダウンロード](https://github.com/Nore139/UnkoTechnicaMod/releases/latest)**（`UnkoTechnicaMod_v○.○.○.zip` をクリック）
+👉 **[最新版をダウンロード](https://github.com/Nore139/UnkoTechnicaMod/releases/latest)**（`UnkoTechnicaMod_v1.0.0.zip` をクリック）
 
 ## このMODでできること
 
