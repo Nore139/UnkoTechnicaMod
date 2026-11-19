@@ -22,7 +22,8 @@ Add-Type -AssemblyName System.IO.Compression.FileSystem
 #---------------------------------------------------------------------------
 # 設定
 #---------------------------------------------------------------------------
-$ModVersion = '1.0.0'
+$ModVersion = '1.0.1'
+$TestedGameVersions = @('1.0.5', '1.0.6')   # 動作確認済みのゲームのバージョン
 $AppId      = '3101010'
 $GameTitle  = 'ウンコテクニカ'
 $Nw = @{
@@ -59,6 +60,11 @@ $Text = @{
     st_none = '状態: MODは適用されていません'
     st_ok = '状態: MODは適用済みです（NW.js {0}）'
     st_partial = '状態: MODの一部が元に戻っています（Steamの更新など）。もう一度「MODを適用する」を押してください'
+    ver_ok = 'ゲームのバージョン: {0}（動作確認済み）'
+    ver_untested = 'ゲームのバージョン: {0}（このMODでは未確認です）'
+    ver_unknown = 'ゲームのバージョン: 不明'
+    confirm_untested = "このゲームのバージョン（{0}）は、このMODでの動作をまだ確認していません。`r`n新しい版のMODが出ていないか、配布ページを確認してください。`r`n`r`nそれでも適用しますか？"
+    s_untested = '注意: ゲームのバージョン {0} は、このMODでは未確認です'
     notfound = 'ウンコテクニカのフォルダが見つかりませんでした。「参照...」から、Game.exe があるフォルダを選んでください。'
     badfolder = 'このフォルダはウンコテクニカのフォルダではないようです（Game.exe と www フォルダがあるフォルダを選んでください）。'
     running = 'ゲームが起動中です。ゲームを終了してから、もう一度押してください。'
@@ -101,6 +107,11 @@ $Text = @{
     st_none = 'Status: MOD is not applied'
     st_ok = 'Status: MOD is applied (NW.js {0})'
     st_partial = 'Status: part of the MOD was reverted (e.g. by a Steam update). Press "Apply MOD" again.'
+    ver_ok = 'Game version: {0} (tested)'
+    ver_untested = 'Game version: {0} (not tested with this MOD)'
+    ver_unknown = 'Game version: unknown'
+    confirm_untested = "This game version ({0}) has not been tested with this MOD yet.`r`nPlease check the download page for a newer version of the MOD.`r`n`r`nApply anyway?"
+    s_untested = 'Warning: game version {0} has not been tested with this MOD'
     notfound = 'Could not find the UNKO TECHNICA folder. Use "Browse..." and select the folder that contains Game.exe.'
     badfolder = 'This does not look like the UNKO TECHNICA folder (select the folder that contains Game.exe and the www folder).'
     running = 'The game is running. Please close the game and try again.'
@@ -195,6 +206,17 @@ function Test-GameDir([string]$dir) {
     if (-not (Test-Path -LiteralPath $sys) -or -not (Test-Path -LiteralPath (Join-Path $dir 'www\js\plugins.js'))) { return $false }
     try { return ([System.IO.File]::ReadAllText($sys, $Utf8)).Contains('"gameTitle":"' + $GameTitle + '"') } catch { return $false }
 }
+
+# ゲームのバージョン（タイトル画面に表示される「1.0.6」などの文字）を読む
+function Get-GameVersion([string]$dir) {
+    try {
+        $t = [System.IO.File]::ReadAllText((Join-Path $dir 'www\data\Map003.json'), $Utf8)
+        $m = [regex]::Match($t, '"D_TEXT (\d+\.\d+\.\d+) ')
+        if ($m.Success) { return $m.Groups[1].Value }
+    } catch {}
+    return $null
+}
+function Test-VersionTested([string]$v) { return ($v -and ($TestedGameVersions -contains $v)) }
 
 function Get-Paths([string]$dir) {
     $mod = Join-Path $dir '_unko_mod'
@@ -429,6 +451,8 @@ function Invoke-Apply {
     try {
         Log (T 's_check'); SetProgress 0
         Precheck $dir
+        $gv = Get-GameVersion $dir
+        if (-not (Test-VersionTested $gv)) { Log ([string]::Format((T 's_untested'), $(if ($gv) { $gv } else { '?' }))) }
         if ((Get-FreeBytes $dir) -lt 1GB -or (Get-FreeBytes $WorkDir) -lt 700MB) { throw (T 'nospace') }
         $p = Get-Paths $dir
         Backup-Saves $p
@@ -483,7 +507,7 @@ function Invoke-Revert {
 # 画面
 #---------------------------------------------------------------------------
 $form = New-Object System.Windows.Forms.Form
-$form.Size = New-Object System.Drawing.Size(640, 520)
+$form.Size = New-Object System.Drawing.Size(640, 540)
 $form.StartPosition = 'CenterScreen'
 $form.FormBorderStyle = 'FixedDialog'
 $form.MaximizeBox = $false
@@ -502,14 +526,14 @@ $langBox.DropDownStyle = 'DropDownList'; [void]$langBox.Items.Add('日本語'); 
 $folderLbl = NewCtl System.Windows.Forms.Label 15 118 600 20
 $script:FolderBox = NewCtl System.Windows.Forms.TextBox 15 140 500 24
 $browseBtn = NewCtl System.Windows.Forms.Button 525 139 85 26
-$statusLbl = NewCtl System.Windows.Forms.Label 15 172 600 36
+$statusLbl = NewCtl System.Windows.Forms.Label 15 172 600 54
 $statusLbl.Font = New-Object System.Drawing.Font('Yu Gothic UI', 9, [System.Drawing.FontStyle]::Bold)
-$applyBtn  = NewCtl System.Windows.Forms.Button 15 212 190 36
-$revertBtn = NewCtl System.Windows.Forms.Button 215 212 190 36
-$closeBtn  = NewCtl System.Windows.Forms.Button 520 212 90 36
-$script:Bar = NewCtl System.Windows.Forms.ProgressBar 15 258 595 18
-$script:StatusLine = NewCtl System.Windows.Forms.Label 15 280 595 20
-$script:LogBox = NewCtl System.Windows.Forms.TextBox 15 302 595 165
+$applyBtn  = NewCtl System.Windows.Forms.Button 15 230 190 36
+$revertBtn = NewCtl System.Windows.Forms.Button 215 230 190 36
+$closeBtn  = NewCtl System.Windows.Forms.Button 520 230 90 36
+$script:Bar = NewCtl System.Windows.Forms.ProgressBar 15 276 595 18
+$script:StatusLine = NewCtl System.Windows.Forms.Label 15 298 595 20
+$script:LogBox = NewCtl System.Windows.Forms.TextBox 15 320 595 165
 $script:LogBox.Multiline = $true; $script:LogBox.ReadOnly = $true; $script:LogBox.ScrollBars = 'Vertical'
 
 function Apply-Texts {
@@ -523,11 +547,15 @@ function Update-Status {
     $ok = Test-GameDir $dir
     $applyBtn.Enabled = $ok; $revertBtn.Enabled = $ok
     if (-not $ok) { $statusLbl.Text = T 'st_unknown'; $statusLbl.ForeColor = 'DimGray'; return }
+    $gv = Get-GameVersion $dir
+    $verLine = if (-not $gv) { T 'ver_unknown' } elseif (Test-VersionTested $gv) { [string]::Format((T 'ver_ok'), $gv) } else { [string]::Format((T 'ver_untested'), $gv) }
     switch (Get-ModState $dir) {
         'ok'      { $statusLbl.Text = [string]::Format((T 'st_ok'), $Nw.Version); $statusLbl.ForeColor = 'DarkGreen' }
         'partial' { $statusLbl.Text = T 'st_partial'; $statusLbl.ForeColor = 'DarkOrange' }
         default   { $statusLbl.Text = T 'st_none'; $statusLbl.ForeColor = 'Black' }
     }
+    $statusLbl.Text = $verLine + "`r`n" + $statusLbl.Text
+    if (-not (Test-VersionTested $gv)) { $statusLbl.ForeColor = 'DarkOrange' }
 }
 function Set-Busy([bool]$b) {
     foreach ($c in @($applyBtn, $revertBtn, $closeBtn, $browseBtn, $langBox, $script:FolderBox)) { $c.Enabled = -not $b }
@@ -546,6 +574,11 @@ $browseBtn.Add_Click({
 })
 $script:FolderBox.Add_Leave({ Update-Status })
 $applyBtn.Add_Click({
+    $gv = Get-GameVersion $script:FolderBox.Text.Trim()
+    if (-not (Test-VersionTested $gv)) {
+        $msg = [string]::Format((T 'confirm_untested'), $(if ($gv) { $gv } else { '?' }))
+        if ([System.Windows.Forms.MessageBox]::Show($msg, (T 'title'), 'YesNo', 'Warning') -ne 'Yes') { return }
+    }
     if ([System.Windows.Forms.MessageBox]::Show((T 'confirm_apply'), (T 'title'), 'YesNo', 'Question') -ne 'Yes') { return }
     Set-Busy $true; try { Invoke-Apply } finally { Set-Busy $false; Update-Status }
 })

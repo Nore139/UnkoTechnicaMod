@@ -11,20 +11,20 @@ Steam版『ウンコテクニカ』向けの**非公式MOD**です。ボタン�
 
 ## ダウンロード
 
-👉 **[最新版をダウンロード](https://github.com/Nore139/UnkoTechnicaMod/releases/latest)**（`UnkoTechnicaMod_v1.0.0.zip` をクリック）
+👉 **[最新版をダウンロード](https://github.com/Nore139/UnkoTechnicaMod/releases/latest)**（`UnkoTechnicaMod_v1.0.1.zip` をクリック）
 
 ## このMODでできること
 
 | | 内容 |
 |---|---|
 | **画面のカクつき対策** | ゲームの実行環境（NW.js）を、同梱の古い版（0.29.0）から新しい版（0.118.0）に入れ替えます。PCによっては古い実行環境だとグラフィックボードが使えず、後半ステージで画面がカクつきます。新しい版では、グラフィックボードで描画できるようになります。 |
-| **CANNONの向きズレ修正** | 回転するCANNONが回った直後ぴったりのタイミングで飛び込むと、もう一段（90°）余計に回ってしまう不具合を直します。公式の修正版が出たあとも、二重に補正されないように作ってあります。 |
+| **CANNONの向きズレ修正** | 回転するCANNONが回った直後ぴったりのタイミングで飛び込むと、もう一段（90°）余計に回ってしまう不具合を直します。ゲーム1.0.6では公式にもほぼ同じ修正が入りました。このMODは、公式の修正と重ねても二重に補正されません。 |
 
 ステージやセーブデータなど、ゲームの中身は変えません。
 
 ## 動作環境
 
-- Steam版『ウンコテクニカ』
+- Steam版『ウンコテクニカ』（動作確認済みのゲームのバージョン: **1.0.5 / 1.0.6**）
 - Windows 10 / 11（64bit）
 - インターネット接続（最初に約216MBをダウンロードします）
 - 空き容量 約1GB
@@ -73,20 +73,20 @@ An **unofficial MOD** for the Steam version of "UNKO TECHNICA". Apply it with on
 
 ## Download
 
-👉 **[Download the latest version](https://github.com/Nore139/UnkoTechnicaMod/releases/latest)** (click `UnkoTechnicaMod_v1.0.0.zip`)
+👉 **[Download the latest version](https://github.com/Nore139/UnkoTechnicaMod/releases/latest)** (click `UnkoTechnicaMod_v1.0.1.zip`)
 
 ## What it does
 
 | | |
 |---|---|
 | **Fixes stutter** | Replaces the game's runtime (NW.js) from the bundled old version (0.29.0) with a newer one (0.118.0). On some PCs the old runtime cannot use the graphics card, which makes later stages stutter. With the newer runtime the game renders with your graphics card. |
-| **Fixes the CANNON direction bug** | If you enter a rotating CANNON on the exact moment it rotates, it turns one extra step (90 degrees). This MOD fixes that, and is designed not to double-correct after an official fix is released. |
+| **Fixes the CANNON direction bug** | If you enter a rotating CANNON on the exact moment it rotates, it turns one extra step (90 degrees). This MOD fixes that. Game version 1.0.6 includes an almost identical official fix; this MOD does not double-correct when combined with it. |
 
 Stages, save data and other game content are not changed.
 
 ## Requirements
 
-- Steam version of "UNKO TECHNICA"
+- Steam version of "UNKO TECHNICA" (tested game versions: **1.0.5 / 1.0.6**)
 - Windows 10 / 11 (64-bit)
 - Internet connection (about 216 MB is downloaded the first time)
 - About 1 GB of free disk space

@@ -1,5 +1,5 @@
 ﻿==============================================================
- UNKO TECHNICA Unofficial MOD (GPU rendering + CANNON fix)  v1.0.0
+ UNKO TECHNICA Unofficial MOD (GPU rendering + CANNON fix)  v1.0.1
 ==============================================================
 
 This is an UNOFFICIAL MOD. Use it at your own risk.
@@ -15,7 +15,8 @@ Please do not contact the game's developer about this MOD.
 
 2. Fixes the CANNON direction bug
    If you enter a rotating CANNON on the exact moment it rotates, it turns one extra step (90 degrees).
-   This MOD fixes that. (It is designed not to double-correct after an official fix is released.)
+   This MOD fixes that. Game version 1.0.6 includes an almost identical official fix;
+   this MOD does not double-correct when combined with it.
 
 Stages, save data and other game content are not changed.
 
@@ -23,6 +24,8 @@ Stages, save data and other game content are not changed.
 - Requirements
 --------------------------------------------------------------
 - Steam version of "UNKO TECHNICA"
+  Tested game versions: 1.0.5 / 1.0.6
+  (The game version is shown on the title screen and in the MOD window.)
 - Windows 10 / 11 (64-bit)
 - Internet connection (about 216 MB is downloaded the first time)
 - About 1 GB of free disk space
@@ -109,4 +112,8 @@ Download page: https://github.com/Nore139/UnkoTechnicaMod
 
 - Changelog
 --------------------------------------------------------------
+v1.0.1  Supports game version 1.0.6
+        - The MOD window now shows the game version and whether it has been tested
+        - Shows a confirmation message before applying to an untested game version
+        - Added a safety check so the CANNON fix cannot affect other events after a game update
 v1.0.0  First public release
